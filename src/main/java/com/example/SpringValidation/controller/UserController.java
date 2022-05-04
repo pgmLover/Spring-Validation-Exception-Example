@@ -2,6 +2,7 @@ package com.example.SpringValidation.controller;
 
 import com.example.SpringValidation.dto.UserRequest;
 import com.example.SpringValidation.entity.User;
+import com.example.SpringValidation.exception.UserNotFoundException;
 import com.example.SpringValidation.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.CreatedBy;
@@ -30,9 +31,15 @@ public class UserController {
     }
 
     @GetMapping("/fetchUser/{id}")
-    public ResponseEntity<User> getUser(@PathVariable int id){
+    public ResponseEntity<User> getUser(@PathVariable int id) throws UserNotFoundException {
         return ResponseEntity.ok(userService.getUser(id));
     }
+
+    @DeleteMapping("/delete/{id}")
+public String deleteUserById(@PathVariable int id) throws UserNotFoundException {
+       return userService.deleteUser(id);
+    }
+
 
 
 }
