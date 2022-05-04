@@ -14,8 +14,8 @@ public class UserService {
     private UserRepository userRepository;
 
     public User saveUser(UserRequest userRequest) {
-        User user = new User(5, userRequest.getName(), userRequest.getEmail(), userRequest.getPhone(), userRequest.getGender(), userRequest.getAge(), userRequest.getNationality());
-        return user;
+        User user=User.build(0,userRequest.getName(),userRequest.getEmail(),userRequest.getPhone(),userRequest.getGender(),userRequest.getAge(),userRequest.getNationality());
+        return userRepository.save(user);
     }
 
     public List<User> getAllUser(){
