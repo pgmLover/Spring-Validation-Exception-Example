@@ -5,9 +5,14 @@ import com.example.SpringValidation.entity.User;
 import com.example.SpringValidation.exception.UserNotFoundException;
 import com.example.SpringValidation.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -37,13 +42,33 @@ public class UserService {
     }
 
     public String deleteUser(int id) throws UserNotFoundException {
-            try{
-                userRepository.deleteById(id);
-                return "deleted user id" + id;
-            }
-            catch (Exception exception) {
-               throw new UserNotFoundException("User Not found with Id :" + id);
-            }
+        try {
+            userRepository.deleteById(id);
+            return "deleted user id" + id;
+        } catch (Exception exception) {
+            throw new UserNotFoundException("User Not found with Id :" + id);
         }
+    }
+
+    public User updateUserInfo(User user) {
+
+        User existingUser = userRepository.findById(user.getId()).orElse(null);
+        existingUser.setName(user.getName());
+        existingUser.setEmail(user.getEmail());
+        existingUser.setAge(user.getAge());
+        existingUser.setGender(user.getGender());
+        existingUser.setNationality(user.getNationality());
+        existingUser.setPhone(user.getPhone());
+        return userRepository.save(existingUser);
 
     }
+
+    public List<User> findPaginated(int pageNo, int pageSize) {
+        Pageable paging = PageRequest.of(pageNo, pageSize);
+        Page<User> pageResult = userRepository.findAll(paging);
+        return pageResult.toList();
+
+
+    }
+
+}
