@@ -57,5 +57,26 @@ public class UserController {
         return  userService.findPaginated(pageNo,pageSize);
     }
 
+    @GetMapping("/sort/name/{pageNo}/{pageSize}")
+    public List<User> getPaginatedBySort(@PathVariable int pageNo, @PathVariable int pageSize){
 
+        Sort nameSort =Sort.by("name").ascending();
+        return userService.findPaginatedBySort(pageNo,pageSize,nameSort);
+    }
+
+    @GetMapping("/sort/age/{pageNo}/{pageSize}")
+    public List<User> getPaginatedBySortAge(@PathVariable int pageNo, @PathVariable int pageSize){
+
+        Sort ageSort =Sort.by("age").ascending();
+        return userService.findPaginatedBySort(pageNo,pageSize,ageSort);
+
+    }
+
+    @GetMapping("/sort/id/{pageNo}/{pageSize}")
+    public List<User> getPaginatedBySortId(@PathVariable int pageNo, @PathVariable int pageSize){
+
+        Sort idSort =Sort.by("id").ascending();
+        return userService.findPaginatedBySort(pageNo,pageSize,idSort);
+
+    }
 }

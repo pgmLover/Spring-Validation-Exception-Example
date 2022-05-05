@@ -65,15 +65,21 @@ public class UserService {
 
     public List<User> findPaginated(int pageNo, int pageSize) {
 
-        Sort nameSort =Sort.by("name").ascending();
-        Sort ageSort =Sort.by("age").ascending();
-        Sort idSort =Sort.by("id").ascending();
+        Sort nameSort = Sort.by("name").ascending();
+        Sort ageSort = Sort.by("age").ascending();
+        Sort idSort = Sort.by("id").ascending();
 
-        Pageable paging = PageRequest.of(pageNo, pageSize,ageSort.and(idSort));
+        Pageable paging = PageRequest.of(pageNo, pageSize, ageSort.and(idSort));
         Page<User> pageResult = userRepository.findAll(paging);
         return pageResult.toList();
 
 
     }
 
+    public List<User> findPaginatedBySort( int pageNo, int pageSize,Sort by) {
+
+        Pageable paging = PageRequest.of(pageNo, pageSize, by);
+        Page<User> pagedResult = userRepository.findAll(paging);
+        return pagedResult.toList();
+    }
 }
