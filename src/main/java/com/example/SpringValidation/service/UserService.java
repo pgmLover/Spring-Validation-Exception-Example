@@ -64,7 +64,12 @@ public class UserService {
     }
 
     public List<User> findPaginated(int pageNo, int pageSize) {
-        Pageable paging = PageRequest.of(pageNo, pageSize);
+
+        Sort nameSort =Sort.by("name").ascending();
+        Sort ageSort =Sort.by("age").ascending();
+        Sort idSort =Sort.by("id").ascending();
+
+        Pageable paging = PageRequest.of(pageNo, pageSize,ageSort.and(idSort));
         Page<User> pageResult = userRepository.findAll(paging);
         return pageResult.toList();
 
