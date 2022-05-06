@@ -52,31 +52,25 @@ public class UserController {
     }
 
     @GetMapping("/f/{pageNo}/{pageSize}")
-    public List<User> getPaginated( @PathVariable int pageNo, @PathVariable int pageSize ){
+    public List<User> getPaginated(@PathVariable int pageNo, @PathVariable int pageSize) {
 
-        return  userService.findPaginated(pageNo,pageSize);
+        return userService.findPaginated(pageNo, pageSize);
     }
 
-    @GetMapping("/sort/name/{pageNo}/{pageSize}")
-    public List<User> getPaginatedBySort(@PathVariable int pageNo, @PathVariable int pageSize){
 
-        Sort nameSort =Sort.by("name").ascending();
-        return userService.findPaginatedBySort(pageNo,pageSize,nameSort);
+    @GetMapping("/getAll/{pageNo}/{pageSize}/{type}/{order}")
+    public List<User> getAll(@PathVariable int pageNo, @PathVariable int pageSize,
+                             @PathVariable String type, @PathVariable String order) {
+        return userService.findPaginatedBySort(pageNo,pageSize,type,order);
     }
 
-    @GetMapping("/sort/age/{pageNo}/{pageSize}")
-    public List<User> getPaginatedBySortAge(@PathVariable int pageNo, @PathVariable int pageSize){
 
-        Sort ageSort =Sort.by("age").ascending();
-        return userService.findPaginatedBySort(pageNo,pageSize,ageSort);
 
+    @GetMapping("/Users")
+    public  List<User> getAllByFilter(@RequestParam int pageNo, @RequestParam int pageSize,
+                                      @RequestParam String type, @RequestParam String order) {
+        return userService.findPaginatedByFilter(pageNo,pageSize,type,order);
     }
 
-    @GetMapping("/sort/id/{pageNo}/{pageSize}")
-    public List<User> getPaginatedBySortId(@PathVariable int pageNo, @PathVariable int pageSize){
 
-        Sort idSort =Sort.by("id").ascending();
-        return userService.findPaginatedBySort(pageNo,pageSize,idSort);
-
-    }
 }
