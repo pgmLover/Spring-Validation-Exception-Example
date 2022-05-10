@@ -7,6 +7,8 @@ import com.example.SpringValidation.repository.UserRepository;
 import com.example.SpringValidation.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +26,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    private UserRepository userRepository;
 
     @PostMapping("/users")
     public ResponseEntity<User> saveUser(@RequestBody @Valid UserRequest userRequest) {
@@ -52,7 +53,7 @@ public class UserController {
     }
 
     @GetMapping("/f/{pageNo}/{pageSize}")
-    public List<User> getPaginated(@PathVariable int pageNo, @PathVariable int pageSize) {
+    public Page getPaginated(@PathVariable int pageNo, @PathVariable int pageSize) {
 
         return userService.findPaginated(pageNo, pageSize);
     }
@@ -67,10 +68,20 @@ public class UserController {
 
 
     @GetMapping("/Users")
-    public  List<User> getAllByFilter(@RequestParam int pageNo, @RequestParam int pageSize,
-                                      @RequestParam String type, @RequestParam String order) {
-        return userService.findPaginatedByFilter(pageNo,pageSize,type,order);
+    public  List<User> getAllByFilter(@RequestParam(value = "0") int pageNo, @RequestParam(value ="0")int pageSize,
+                                      @RequestParam (value = "id")String type, @RequestParam (value = "ascending()")String order,
+                                      @RequestParam (value="search")String search) {
+
+        if (search.equals("search")) {
+            return userService.findPaginatedBySort(pageNo, pageSize, type, order);
+        }
+        else{
+            return  userService.findPaginatedByFilter(pageNo, pageSize, type, order,search);
+        }
+
+
     }
+
 
 
 }
